@@ -13,6 +13,9 @@ public class JedisList {
         jedis.lpush("list","v1","v2");
         jedis.rpush("list","v3","v4");
 
+        jedis.brpop("list",0);  // 右侧阻塞弹出 0为等待时间 s，常用于阻塞队列
+        jedis.blpop("list",0);  // 左侧阻塞弹出
+        
         jedis.lpop("list");
         jedis.rpop("list");
 
