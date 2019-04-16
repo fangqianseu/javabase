@@ -35,9 +35,6 @@ public class JedisSortedSet {
         jedis.zrank(key,"k1");  // 由小到大 位次
         jedis.zrevrank(key,"k1");
 
-
-
-
         jedis.zcard(key);  // set 中的 所有元素个数
         jedis.zcount(key, 1, 100);  // score 在 min 和 max 之间的 数目
 
