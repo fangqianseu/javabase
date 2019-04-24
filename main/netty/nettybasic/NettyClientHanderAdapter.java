@@ -8,6 +8,8 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+import java.nio.charset.Charset;
+
 public class NettyClientHanderAdapter extends ChannelInboundHandlerAdapter {
     /**
      * 标准写操作 通过 bytebuf
@@ -29,10 +31,9 @@ public class NettyClientHanderAdapter extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf buf = (ByteBuf) msg;
-        byte[] req = new byte[buf.readableBytes()];
-        buf.readBytes(req);
+        ByteBuf req = buf.readBytes(buf.readableBytes());
 
-        System.out.println(new String(req, "UTF-8"));
+        System.out.println(req.toString(Charset.forName("utf-8")));
     }
 
     @Override

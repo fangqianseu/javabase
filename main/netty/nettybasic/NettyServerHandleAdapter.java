@@ -21,11 +21,14 @@ public class NettyServerHandleAdapter extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        // 读操作
         ByteBuf buf = (ByteBuf) msg;
         byte[] req = new byte[buf.readableBytes()];
         buf.readBytes(req);
+
         System.out.println(new String(req, "utf-8"));
 
+        // 写操作
         ByteBuf res = Unpooled.copiedBuffer("hello client".getBytes());
         ctx.writeAndFlush(res);
     }
