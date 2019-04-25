@@ -1,18 +1,19 @@
 /*
 Date: 04/24,2019, 16:17
 
-加入编码器 解决 tcp 粘包拆包问题
+加入 分隔符 编码器
 */
-package netty.nettycodec.linebased;
+package netty.nettyframe.delimiter;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LineBasedFrameDecoder;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 
 public class NettyClient {
@@ -28,9 +29,10 @@ public class NettyClient {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             // 添加编码器 解决tcp半包问题
-                            ch.pipeline().addLast(new LineBasedFrameDecoder(1024)); // 基于 分隔符 \r\n or \n 为结束标志
-                            ch.pipeline().addLast(new StringDecoder());             // 将对象转化为字符串
+                            ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,
+                                    Unpooled.copiedBuffer("$_".getBytes())));   // 指定的分隔符
 
+                            ch.pipeline().addLast(new StringDecoder());
                             ch.pipeline().addLast(new NettyClientHanderAdapter());
                         }
                     });

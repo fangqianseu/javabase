@@ -1,10 +1,8 @@
 /*
 Date: 04/24,2019, 16:18
 */
-package netty.nettycodec.delimiter;
+package netty.nettycodec.fastjson;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -12,7 +10,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * 服务器端的自定义读写操作
  */
 public class NettyServerHandleAdapter extends ChannelInboundHandlerAdapter {
-    private static final String DELIMITER = "$_";
     private int count = 0;
 
     /**
@@ -25,12 +22,8 @@ public class NettyServerHandleAdapter extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 读操作
-        String context = (String) msg;
-        System.out.println(String.format("context: {%s} , total count : %s", context, ++count));
-
-        // 写操作
-        ByteBuf res = Unpooled.copiedBuffer(("hello client. " + DELIMITER).getBytes());
-        ctx.writeAndFlush(res);
+        User context = (User) msg;
+        System.out.println(String.format("context: %s, total count : %s", context, ++count));
     }
 
     @Override

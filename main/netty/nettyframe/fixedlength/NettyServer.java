@@ -1,19 +1,18 @@
 /*
 Date: 04/24,2019, 15:42
 
-加入 分隔符 编码器
+加入 FixedLength 解码器
 */
-package netty.nettycodec.delimiter;
+package netty.nettyframe.fixedlength;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 
 public class NettyServer implements Runnable {
@@ -44,12 +43,11 @@ public class NettyServer implements Runnable {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             // 添加编码器 解决tcp半包问题
+                            ch.pipeline().addLast(new FixedLengthFrameDecoder(20)); // 基于 固定长度 解码；不足则缓存半包 直到满足长度要求
 
-                            ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,
-                                    Unpooled.copiedBuffer("$_".getBytes())));   // 指定的分隔符
+                            ch.pipeline().addLast(new StringDecoder());             // 将对象转化为字符串
 
-                            ch.pipeline().addLast(new StringDecoder());
-                            ch.pipeline().addLast(new NettyServerHandleAdapter());
+//                            ch.pipeline().addLast(new NettyServerHandleAdapter());
                         }
                     });
 

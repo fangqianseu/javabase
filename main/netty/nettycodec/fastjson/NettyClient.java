@@ -1,23 +1,26 @@
 /*
 Date: 04/24,2019, 16:17
 
-加入 分隔符 编码器
+加入 fastjson 编码器
 */
-package netty.nettycodec.delimiter;
+package netty.nettycodec.fastjson;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.LineBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.string.StringDecoder;
 
 public class NettyClient {
+
+    public static void main(String[] args) {
+        new NettyClient().connect("localhost", 7777);
+    }
 
     public void connect(String host, int port) {
         NioEventLoopGroup group = new NioEventLoopGroup();
@@ -30,10 +33,11 @@ public class NettyClient {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             // 添加编码器 解决tcp半包问题
-                            ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,
-                                    Unpooled.copiedBuffer("$_".getBytes())));   // 指定的分隔符
+                            ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
+                            ch.pipeline().addLast(new LengthFieldPrepender(2));
+                            ch.pipeline().addLast(new FastJsonDecoder());
+                            ch.pipeline().addLast(new FastJsonEncoder());
 
-                            ch.pipeline().addLast(new StringDecoder());
                             ch.pipeline().addLast(new NettyClientHanderAdapter());
                         }
                     });
@@ -44,8 +48,5 @@ public class NettyClient {
         } finally {
             group.shutdownGracefully();
         }
-    }
-    public static void main(String[] args){
-        new NettyClient().connect("localhost",7777);
     }
 }

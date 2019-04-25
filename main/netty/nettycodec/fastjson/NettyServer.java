@@ -1,9 +1,9 @@
 /*
 Date: 04/24,2019, 15:42
 
-加入编码器 解决 tcp 粘包拆包问题
+加入 fastjson 编码器
 */
-package netty.nettycodec.linebased;
+package netty.nettycodec.fastjson;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -12,7 +12,8 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.LineBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.string.StringDecoder;
 
 public class NettyServer implements Runnable {
@@ -20,6 +21,10 @@ public class NettyServer implements Runnable {
 
     public NettyServer(int port) throws InterruptedException {
         this.port = port;
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        new Thread(new NettyServer(7777)).start();
     }
 
     @Override
@@ -39,8 +44,10 @@ public class NettyServer implements Runnable {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             // 添加编码器 解决tcp半包问题
-                            ch.pipeline().addLast(new LineBasedFrameDecoder(1024)); // 基于 分隔符 \r\n or \n 为结束标志
-                            ch.pipeline().addLast(new StringDecoder());             // 将对象转化为字符串
+                            ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
+                            ch.pipeline().addLast(new LengthFieldPrepender(2));
+                            ch.pipeline().addLast(new FastJsonEncoder());
+                            ch.pipeline().addLast(new FastJsonDecoder());
 
                             ch.pipeline().addLast(new NettyServerHandleAdapter());
                         }
@@ -57,9 +64,5 @@ public class NettyServer implements Runnable {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        new Thread(new NettyServer(7777)).start();
     }
 }

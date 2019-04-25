@@ -1,7 +1,7 @@
 /*
 Date: 04/24,2019, 16:18
 */
-package netty.nettycodec.linebased;
+package netty.nettyframe.linebased;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
