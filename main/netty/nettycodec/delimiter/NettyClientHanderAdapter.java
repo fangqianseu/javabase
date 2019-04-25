@@ -1,7 +1,7 @@
 /*
 Date: 04/24,2019, 16:28
 */
-package netty.nettytcpzhanbao.linebasedcodec;
+package netty.nettycodec.delimiter;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -9,6 +9,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 public class NettyClientHanderAdapter extends ChannelInboundHandlerAdapter {
+    private static final String DELIMITER = "$_";
+
     /**
      * 标准写操作 通过 bytebuf
      *
@@ -18,7 +20,7 @@ public class NettyClientHanderAdapter extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         for (int i = 0; i < 100; i++) {
-            ByteBuf req = Unpooled.copiedBuffer("Hello server.\n".getBytes());
+            ByteBuf req = Unpooled.copiedBuffer(("Hello server." + DELIMITER).getBytes());
             ctx.writeAndFlush(req);
         }
     }

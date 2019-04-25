@@ -3,7 +3,7 @@ Date: 04/24,2019, 16:17
 
 加入编码器 解决 tcp 粘包拆包问题
 */
-package netty.nettytcpzhanbao.linebasedcodec;
+package netty.nettycodec.linebased;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
