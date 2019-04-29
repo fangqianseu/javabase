@@ -11,10 +11,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.codec.http.HttpServerCodec;
 import netty.protocol.http.json.codec.HttpJsonRequestDecoder;
-import netty.protocol.http.json.codec.HttpJsonRequestEncoder;
 import netty.protocol.http.json.codec.HttpJsonResponseEncoder;
 import netty.protocol.http.json.pojo.User;
 
@@ -43,8 +41,9 @@ public class HttpJsonServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new HttpRequestDecoder());
-                            ch.pipeline().addLast(new HttpResponseEncoder());
+//                            ch.pipeline().addLast(new HttpRequestDecoder());
+//                            ch.pipeline().addLast(new HttpResponseEncoder());
+                            ch.pipeline().addLast(new HttpServerCodec());
                             ch.pipeline().addLast(new HttpObjectAggregator(65536));
 
 

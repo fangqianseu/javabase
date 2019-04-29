@@ -29,7 +29,7 @@ public class NettyServer implements Runnable {
             ServerBootstrap bootstrap = new ServerBootstrap();
             // 绑定线程池
             bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG, 1024)
+                    .option(ChannelOption.SO_BACKLOG, 1024) // 服务器端维护的 最大排队个数
                     // 绑定服务器读写操作
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
