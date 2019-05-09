@@ -34,6 +34,7 @@ public class Connection {
 
         System.out.println("ZooKeeper session second established.");
         Thread.sleep(1000);
+        zookeeper.close();
     }
 
     static class SimpleWatcher implements Watcher {

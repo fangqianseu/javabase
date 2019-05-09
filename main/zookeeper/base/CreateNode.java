@@ -25,7 +25,7 @@ public class CreateNode {
         String res = zookeeper.create("/zk-test-Sync", "Sync".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         System.out.println("Success create znode: " + res);
 
-        // 异步方式创建节点
+        // 异步方式 创建节点
         System.out.println("Create ASync");
         zookeeper.create("/zk-test-ASync", "ASync".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL,
                 new AsyncCallback.StringCallback() {
@@ -44,6 +44,8 @@ public class CreateNode {
                     }
                 }, new ArrayList<>());
         createNodeSemaphore.await();
+
+        zookeeper.close();
     }
 
     static class SimpleWatcher implements Watcher {
