@@ -5,6 +5,7 @@ package zookeeper.base;
 
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
+import zookeeper.StatUtils;
 
 import java.io.IOException;
 import java.util.List;

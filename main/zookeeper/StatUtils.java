@@ -1,7 +1,7 @@
 /*
 Date: 05/09,2019, 08:42
 */
-package zookeeper.base;
+package zookeeper;
 
 import org.apache.zookeeper.data.Stat;
 
