@@ -12,8 +12,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpRequestEncoder;
-import io.netty.handler.codec.http.HttpResponseDecoder;
 import netty.protocol.http.json.codec.HttpJsonRequestEncoder;
 import netty.protocol.http.json.codec.HttpJsonResponseDecoder;
 import netty.protocol.http.json.pojo.User;
