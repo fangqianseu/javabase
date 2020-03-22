@@ -190,7 +190,9 @@ public class baseLambda {
 
 
     /**
-     * 对于 stream 的每一个元素进行 立即 操作， 但不影响原来的流
+     * 生成一个包含原Stream的所有元素的新Stream，同时会提供一个消费函数（Consumer实例）
+     * 新Stream每个元素被消费的时候都会执行给定的消费函数，并且消费函数优先执行
+     * 不影响原来的流
      */
     @Test
     public void peek() {
